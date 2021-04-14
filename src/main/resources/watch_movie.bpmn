@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_124yujw" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.6.0">
+  <bpmn:process id="watchMovie" name="Watch Movie" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_1yfbdma</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_1yfbdma" sourceRef="StartEvent_1" targetRef="pickMovie" />
+    <bpmn:userTask id="pickMovie" name="Pick a movie">
+      <bpmn:incoming>Flow_1yfbdma</bpmn:incoming>
+      <bpmn:outgoing>Flow_16lpykb</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_0afor5j" name="What movie" default="Flow_1wi3007">
+      <bpmn:incoming>Flow_16lpykb</bpmn:incoming>
+      <bpmn:outgoing>Flow_0wogpbu</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1wi3007</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_16lpykb" sourceRef="pickMovie" targetRef="Gateway_0afor5j" />
+    <bpmn:sequenceFlow id="Flow_0wogpbu" sourceRef="Gateway_0afor5j" targetRef="watchSeriously">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">#{selectedMovie == 'The Matrix'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:endEvent id="Event_0juci70">
+      <bpmn:incoming>Flow_15opqvi</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_15opqvi" sourceRef="watchSeriously" targetRef="Event_0juci70" />
+    <bpmn:endEvent id="Event_179zu9z">
+      <bpmn:incoming>Flow_1wi3007</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1wi3007" sourceRef="Gateway_0afor5j" targetRef="Event_179zu9z" />
+    <bpmn:serviceTask id="watchSeriously" name="Watch seriously" camunda:class="com.erik.learn.delegate.LoggerDelegate">
+      <bpmn:incoming>Flow_0wogpbu</bpmn:incoming>
+      <bpmn:outgoing>Flow_15opqvi</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="watchMovie">
+      <bpmndi:BPMNEdge id="Flow_1wi3007_di" bpmnElement="Flow_1wi3007">
+        <di:waypoint x="475" y="227" />
+        <di:waypoint x="532" y="227" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_15opqvi_di" bpmnElement="Flow_15opqvi">
+        <di:waypoint x="630" y="120" />
+        <di:waypoint x="692" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0wogpbu_di" bpmnElement="Flow_0wogpbu">
+        <di:waypoint x="450" y="202" />
+        <di:waypoint x="450" y="120" />
+        <di:waypoint x="530" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_16lpykb_di" bpmnElement="Flow_16lpykb">
+        <di:waypoint x="370" y="227" />
+        <di:waypoint x="425" y="227" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1yfbdma_di" bpmnElement="Flow_1yfbdma">
+        <di:waypoint x="215" y="227" />
+        <di:waypoint x="270" y="227" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="209" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1trkhlz_di" bpmnElement="pickMovie">
+        <dc:Bounds x="270" y="187" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0afor5j_di" bpmnElement="Gateway_0afor5j" isMarkerVisible="true">
+        <dc:Bounds x="425" y="202" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="421" y="259" width="58" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0juci70_di" bpmnElement="Event_0juci70">
+        <dc:Bounds x="692" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_179zu9z_di" bpmnElement="Event_179zu9z">
+        <dc:Bounds x="532" y="209" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1n8wcsw_di" bpmnElement="watchSeriously">
+        <dc:Bounds x="530" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
