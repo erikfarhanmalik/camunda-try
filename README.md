@@ -5,6 +5,11 @@ Just to try camunda
 - Import project into intellij idea (or other IDE) as maven project and run the Application.java
 - Or run using maven command in terminal `mvn spring-boot:run`
 
+# How to Make Executable
+- Use maven command in terminal `mvn clean package`
+- You will find a `jar` file inside `target` folder
+- You can run it by using JRE with this command: `java -jar camunda-try-1.0.0-SNAPSHOT.jar`
+
 # Camunda Utility
 - Visit camunda UI at `http://localhost:8080/`
 - Start some process and complete some task using cockpit
