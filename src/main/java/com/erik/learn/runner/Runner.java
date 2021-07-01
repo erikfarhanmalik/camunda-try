@@ -1,36 +1,50 @@
 package com.erik.learn.runner;
 
 import com.erik.learn.CamundaClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.erik.learn.entity.RequestToProcessMapping;
+import com.erik.learn.repository.RequestToProcessMappingRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 
 @Component
+@Slf4j
+@RequiredArgsConstructor
 public class Runner implements CommandLineRunner {
 
-    private final Logger logger = LoggerFactory.getLogger(CommandLineRunner.class);
     private final CamundaClient camundaClient;
-
-    public Runner(CamundaClient camundaClient) {
-        this.camundaClient = camundaClient;
-    }
+    private final RequestToProcessMappingRepository requestToProcessMappingRepository;
 
     @Override
     public void run(String... args) throws Exception {
-        logger.info("Begin to start watchMovie process");
+//        testDb();
+//        testProcess();
+    }
+
+    private void testProcess() throws InterruptedException {
+        log.info("Begin to start watchMovie process");
         Thread.sleep(5000);
-        logger.info("Starting watchMovie process");
+        log.info("Starting watchMovie process");
         String processInstanceId = camundaClient.startProcess("watchMovie", new HashMap<>()).getProcessInstanceId();
-        logger.info("processInstanceId: {}", processInstanceId);
+        log.info("processInstanceId: {}", processInstanceId);
 
         Thread.sleep(5000);
-        logger.info("Completing pickMovie task");
+        log.info("Completing pickMovie task");
         HashMap<String, Object> variables = new HashMap<>();
         variables.put("selectedMovie", "The Matrix");
         camundaClient.completeUserTask(processInstanceId, "pickMovie", variables);
-        logger.info("Completed!");
+        log.info("Completed!");
+    }
+
+    private void testDb() {
+        RequestToProcessMapping mapping = new RequestToProcessMapping(999L, "999L");
+        mapping = requestToProcessMappingRepository.save(mapping);
+        RequestToProcessMapping finalMapping = mapping;
+        mapping = requestToProcessMappingRepository.findById(mapping.getId())
+                .orElseThrow(() -> new RuntimeException("Could not find mapping with id: " + finalMapping.getId()));
+        System.out.println("mark: " + mapping.getRequestId());
     }
 }
